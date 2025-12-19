@@ -28,7 +28,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 $host = $_SERVER['HTTP_HOST'];
 
 
-$folder = '/sipanda';
+$folder = '/sipanda1';
 
 
 define('BASE_URL', $protocol . '://' . $host . $folder);
