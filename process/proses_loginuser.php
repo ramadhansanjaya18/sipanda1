@@ -32,7 +32,7 @@ if ($result->num_rows > 0) {
         $_SESSION['id_user'] = $user['id_user'];
         $_SESSION['nama_lengkap'] = $user['nama_lengkap'];
 
-        $base_url = '/sipanda';
+        $base_url = '/sipanda1';
         $redirect_url = ($user['role'] == 'kader')
             ? $base_url . '/dashboard_kader.php'
             : $base_url . '/dashboard_bidan.php';

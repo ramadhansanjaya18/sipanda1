@@ -126,7 +126,7 @@ include 'templates/header.php';
                     <div class="form-group">
                         <label for="modal_judul_kegiatan">Judul Kegiatan</label>
                         <select id="modal_judul_kegiatan" name="judul_kegiatan" class="form-select" required>
-                            <option value="" disabled selected>-- Pilih Jenis Kegiatan --</option>
+                            <option value="" disabled selected>Pilih Jenis Kegiatan</option>
                             <option value="Imunisasi">Imunisasi</option>
                             <option value="Posyandu">Posyandu</option>
                         </select>
