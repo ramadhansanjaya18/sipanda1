@@ -1,45 +1,67 @@
 <?php
-require '../config/database.php'; // Muat konfigurasi
+require '../config/database.php';
 
-// Keamanan: Pastikan hanya Kader yang bisa menghapus
+// Cek sesi (Pastikan hanya Kader yang bisa akses)
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'kader') {
-    die("Akses dilarang.");
-}
-
-// 1. Ambil ID Pengguna dari URL
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: ' . BASE_URL . '/manajemen_pengguna.php?status=error_id');
-    exit();
-}
-$id_user_hapus = $_GET['id'];
-
-// 2. Keamanan Tambahan: Jangan biarkan user menghapus dirinya sendiri
-if (isset($_SESSION['id_user']) && $_SESSION['id_user'] == $id_user_hapus) {
-    header('Location: ' . BASE_URL . '/manajemen_pengguna.php?status=error_self_delete');
+    header('Location: ../login.php');
     exit();
 }
 
-// 3. --- PERUBAHAN DI SINI ---
-// Ganti query DELETE dengan query UPDATE
-// $stmt = $conn->prepare("DELETE FROM users WHERE id_user = ?");
-$stmt = $conn->prepare("UPDATE users SET is_active = 0 WHERE id_user = ?"); // Set is_active menjadi 0 (Tidak Aktif)
-$stmt->bind_param("i", $id_user_hapus);
+if (isset($_GET['id'])) {
+    $id_user = $_GET['id'];
 
-// 4. Eksekusi query
-if ($stmt->execute()) {
-    // Cek apakah ada baris yang ter-update
-    if ($stmt->affected_rows > 0) {
-        header('Location: ' . BASE_URL . '/manajemen_pengguna.php?status=sukses_hapus');
+    // --- BAGIAN PENTING: PUTUSKAN HUBUNGAN DATA TERLEBIH DAHULU ---
+    // Agar tidak terkena error Foreign Key Constraint
+    
+    // 1. Ubah data Balita yang didaftarkan user ini menjadi NULL (Tanpa pendaftar)
+    $stmt1 = $conn->prepare("UPDATE balita SET id_kader_pendaftar = NULL WHERE id_kader_pendaftar = ?");
+    $stmt1->bind_param("i", $id_user);
+    $stmt1->execute();
+    $stmt1->close();
+
+    // 2. Ubah data Pemeriksaan yang dilakukan user ini menjadi NULL (Penginput)
+    $stmt2 = $conn->prepare("UPDATE pemeriksaan SET id_kader = NULL WHERE id_kader = ?");
+    $stmt2->bind_param("i", $id_user);
+    $stmt2->execute();
+    $stmt2->close();
+
+    // 3. Ubah data Imunisasi yang dilakukan user ini menjadi NULL (Penginput)
+    $stmt3 = $conn->prepare("UPDATE imunisasi SET id_kader = NULL WHERE id_kader = ?");
+    $stmt3->bind_param("i", $id_user);
+    $stmt3->execute();
+    $stmt3->close();
+
+    // --- PERBAIKAN: TAMBAHKAN PENANGANAN VALIDATOR ---
+    
+    // 4. Ubah data Imunisasi (Validator/Bidan) menjadi NULL
+    // Ini yang menyebabkan error "imunisasi_ibfk_3"
+    $stmt4 = $conn->prepare("UPDATE imunisasi SET id_bidan_validator = NULL WHERE id_bidan_validator = ?");
+    $stmt4->bind_param("i", $id_user);
+    $stmt4->execute();
+    $stmt4->close();
+
+    // 5. Ubah data Pemeriksaan (Validator/Bidan) menjadi NULL
+    // Jaga-jaga jika user ini juga memvalidasi pemeriksaan
+    $stmt5 = $conn->prepare("UPDATE pemeriksaan SET id_bidan_validator = NULL WHERE id_bidan_validator = ?");
+    $stmt5->bind_param("i", $id_user);
+    $stmt5->execute();
+    $stmt5->close();
+
+    // --- SETELAH DATA BERSIH, BARU HAPUS USERNYA ---
+    $stmt = $conn->prepare("DELETE FROM users WHERE id_user = ?");
+    $stmt->bind_param("i", $id_user);
+
+    if ($stmt->execute()) {
+        header("Location: ../manajemen_pengguna.php?msg=deleted");
     } else {
-        // ID tidak ditemukan
-        header('Location: ' . BASE_URL . '/manajemen_pengguna.php?status=gagal_hapus_notfound');
+        // Tampilkan error jika masih gagal (misal constraint lain)
+        echo "Gagal menghapus data. Detail: " . $conn->error;
+        echo "<br><br><a href='../manajemen_pengguna.php'>Kembali</a>";
     }
+    
+    $stmt->close();
 } else {
-    // Gagal eksekusi query
-    header('Location: ' . BASE_URL . '/manajemen_pengguna.php?status=gagal_hapus_db');
+    header("Location: ../manajemen_pengguna.php");
 }
-
-$stmt->close();
 $conn->close();
-exit();
 ?>

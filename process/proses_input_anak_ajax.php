@@ -27,7 +27,7 @@ if (empty($nama_balita) || empty($nik_balita) || empty($tanggal_lahir) || empty(
     exit();
 }
 
-$stmt_cek = $conn->prepare("SELECT id_balita FROM balita WHERE nik_balita = ? AND is_active = 1");
+$stmt_cek = $conn->prepare("SELECT id_balita FROM balita WHERE nik_balita = ?");
 $stmt_cek->bind_param("s", $nik_balita);
 $stmt_cek->execute();
 $result_cek = $stmt_cek->get_result();

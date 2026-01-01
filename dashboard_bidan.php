@@ -16,7 +16,7 @@ $result_pending_imunisasi_count = $conn->query($query_pending_imunisasi_count);
 $data_pending_imunisasi_count = $result_pending_imunisasi_count->fetch_assoc();
 $total_pending_imunisasi = $data_pending_imunisasi_count['total'] ?? 0;
 
-$query_total_anak = "SELECT COUNT(id_balita) AS total FROM balita WHERE is_active = 1";
+$query_total_anak = "SELECT COUNT(id_balita) AS total FROM balita";
 $result_total_anak = $conn->query($query_total_anak);
 $data_total_anak = $result_total_anak->fetch_assoc();
 $total_anak = $data_total_anak['total'] ?? 0;
@@ -26,7 +26,7 @@ $query_list_pemeriksaan = $conn->prepare(
      FROM pemeriksaan p
      JOIN balita b ON p.id_balita = b.id_balita
      LEFT JOIN users u ON p.id_kader = u.id_user
-     WHERE p.status_validasi = 'Belum Divalidasi' AND b.is_active = 1
+     WHERE p.status_validasi = 'Belum Divalidasi'
      ORDER BY p.tanggal_periksa DESC LIMIT 5"
 );
 $query_list_pemeriksaan->execute();
@@ -37,7 +37,7 @@ $query_list_imunisasi = $conn->prepare(
      FROM imunisasi i
      JOIN balita b ON i.id_balita = b.id_balita
      LEFT JOIN users u ON i.id_kader = u.id_user
-     WHERE i.status_validasi = 'Belum Divalidasi' AND b.is_active = 1
+     WHERE i.status_validasi = 'Belum Divalidasi'
      ORDER BY i.tanggal_imunisasi DESC LIMIT 5"
 );
 $query_list_imunisasi->execute();
@@ -80,7 +80,12 @@ include 'templates/header.php';
     <main class="main-content">
 
         <div class="main-header">
-            <h1>Dashboard Bidan</h1>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Dashboard Bidan</h1>
+            </div>
         </div>
 
         <?php if (isset($_GET['status'])): ?>
@@ -110,14 +115,14 @@ include 'templates/header.php';
                 <h3><?= $total_pending_imunisasi ?></h3>
                 <span class="percentage">Data</span>
             </div>
-            <div class="card card-total">
+            <div class="card">
                 <p>Total Anak Terdaftar</p>
                 <h3><?= $total_anak ?></h3>
                 <span class="percentage">Anak</span>
             </div>
         </div>
 
-        <div class="history-section">
+        <div class="history-section-2">
             <h2>Data Terbaru Menunggu Validasi</h2>
 
             <h4 class="sub-section-title">

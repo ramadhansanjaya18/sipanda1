@@ -1059,7 +1059,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const data = Object.fromEntries(formData.entries());
 
       try {
-        // KODE BARU (BENAR) - Hapus kata 'proses_'
+        // Panggil file proses AJAX baru
         const response = await fetch(
           `${JS_BASE_URL}/process/proses_tambah_pengguna_ajax.php`,
           {

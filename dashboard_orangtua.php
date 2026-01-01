@@ -117,7 +117,13 @@ function hitungUmurLengkap($tanggal_lahir)
 
     <main class="main-content">
 
+
         <div class="welcome-header">
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
             <h2>Selamat Datang, Bunda!</h2>
             <p><?= htmlspecialchars($balita['nama_balita']) ?>, <?= hitungUmurLengkap($balita['tanggal_lahir']) ?></p>
         </div>

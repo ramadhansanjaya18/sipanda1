@@ -3,12 +3,11 @@ require 'config/database.php';
 
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'kader') {
-
     header('Location: ' . BASE_URL . '/login.php');
     exit();
 }
 
-$query_users = "SELECT id_user, nama_lengkap, username, role FROM users WHERE is_active = 1 ORDER BY nama_lengkap ASC";
+$query_users = "SELECT * FROM users ORDER BY nama_lengkap ASC";
 $result_users = $conn->query($query_users);
 
 $page_title = 'SIPANDA';
@@ -48,12 +47,19 @@ include 'templates/header.php';
     <main class="main-content">
 
         <div class="main-header">
-            <h2>Manajemen Pengguna</h2>
-            <a href="#" id="openModalUserBtn" class="btn-primary">
-                <i class="fa-solid fa-user-plus"></i> Tambah Pengguna Baru
-            </a>
-        </div>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Manajemen Pengguna</h1>
+            </div>
 
+            <div class="header-actions">
+                <a href="#" id="openModalUserBtn" class="btn-primary">
+                    <i class="fa-solid fa-user-plus"></i> Tambah Pengguna Baru
+                </a>
+            </div>
+        </div>
         <div class="data-table-wrapper">
             <table class="data-table" id="tabel-pengguna">
                 <thead>
@@ -76,7 +82,7 @@ include 'templates/header.php';
                                         title="Edit Pengguna"><i class="fa-solid fa-pencil"></i></a>
                                     <a href="process/hapus_pengguna.php?id=<?= $row['id_user'] ?>" class="btn-aksi btn-hapus"
                                         title="Hapus Pengguna"
-                                        onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna <?= htmlspecialchars(addslashes($row['nama_lengkap'])) // Gunakan addslashes untuk nama ?>? Aksi ini tidak dapat dibatalkan.');">
+                                        onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna <?= htmlspecialchars(addslashes($row['nama_lengkap'])) ?>? Aksi ini tidak dapat dibatalkan.');">
                                         <i class="fa-solid fa-trash"></i>
                                     </a>
                                 </td>
@@ -85,7 +91,7 @@ include 'templates/header.php';
                     <?php else: ?>
                         <tr>
                             <td colspan="4" style="text-align:center;">Belum ada pengguna terdaftar.</td>
-                        </tr> {/* Colspan 4 */}
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -93,6 +99,7 @@ include 'templates/header.php';
 
     </main>
 </div>
+
 <div id="modalTambahUser" class="modal">
     <div class="modal-content">
         <span class="close-button">&times;</span>

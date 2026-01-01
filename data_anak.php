@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'kader')) {
     exit();
 }
 
-$query_balita = "SELECT id_balita, nama_balita, tanggal_lahir, nama_orang_tua FROM balita WHERE is_active = 1 ORDER BY nama_balita ASC";
+$query_balita = "SELECT id_balita, nama_balita, tanggal_lahir, nama_orang_tua FROM balita ORDER BY nama_balita ASC";
 $result_balita = $conn->query($query_balita);
 $page_title = 'SIPANDA';
 $page_css = 'dashboard.css';

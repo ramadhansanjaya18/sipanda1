@@ -52,7 +52,7 @@ $query_aktivitas = "
 ";
 $result_aktivitas = $conn->query($query_aktivitas);
 
-$query_modal_balita = "SELECT id_balita, nama_balita, nik_balita FROM balita WHERE is_active = 1 ORDER BY nama_balita ASC";
+$query_modal_balita = "SELECT id_balita, nama_balita, nik_balita FROM balita ORDER BY nama_balita ASC";
 $result_modal_balita = $conn->query($query_modal_balita);
 
 $page_title = 'SIPANDA';

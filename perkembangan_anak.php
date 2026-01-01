@@ -88,7 +88,12 @@ include 'templates/header.php';
     <main class="main-content">
 
         <div class="main-header">
-            <h1>Riwayat Perkembangan Anak</h1>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Riwayat Perkembangan Anak</h1>
+            </div>
         </div>
 
         <div class="report-section chart-section">

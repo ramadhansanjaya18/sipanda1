@@ -1,27 +1,27 @@
 <?php
 require '../config/database.php';
 
-if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'kader' && $_SESSION['role'] !== 'bidan')) {
-    die("Akses dilarang.");
-}
-
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: ' . BASE_URL . '/data_anak.php?status=error_id');
+// Cek sesi
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'kader') {
+    header('Location: ../login.php');
     exit();
 }
-$id_balita = $_GET['id'];
 
-// Ubah DELETE menjadi UPDATE
-$stmt = $conn->prepare("UPDATE balita SET is_active = 0 WHERE id_balita = ?");
-$stmt->bind_param("i", $id_balita);
+if (isset($_GET['id'])) {
+    $id_balita = $_GET['id'];
 
-if ($stmt->execute()) {
-    header('Location: ' . BASE_URL . '/data_anak.php?status=sukses_hapus');
+    $stmt = $conn->prepare("DELETE FROM balita WHERE id_balita = ?");
+    $stmt->bind_param("i", $id_balita);
+
+    if ($stmt->execute()) {
+        header("Location: ../data_anak.php?msg=deleted");
+    } else {
+        echo "Gagal menghapus data: " . $conn->error;
+    }
+
+    $stmt->close();
 } else {
-    header('Location: ' . BASE_URL . '/data_anak.php?status=gagal_hapus');
+    header("Location: ../data_anak.php");
 }
-
-$stmt->close();
 $conn->close();
-exit();
 ?>

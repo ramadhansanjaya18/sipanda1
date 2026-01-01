@@ -64,7 +64,12 @@ include 'templates/header.php';
     <main class="main-content">
 
         <div class="main-header">
-            <h1>Validasi Data</h1>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Validasi Data</h1>
+            </div>
         </div>
 
         <?php if (isset($_GET['status'])): ?>
@@ -84,7 +89,7 @@ include 'templates/header.php';
 
 
         <div class="history-section">
-            <h2>Data Pemeriksaan Menunggu Validasi (<?= $result_pemeriksaan->num_rows ?>)</h2>
+            <h4 class="sub-section-title">Data Pemeriksaan Menunggu Validasi (<?= $result_pemeriksaan->num_rows ?>)</h4>
             <div class="data-table-wrapper">
                 <table class="data-table">
                     <thead>
@@ -122,8 +127,8 @@ include 'templates/header.php';
             </div>
         </div>
 
-        <div class="history-section">
-            <h2>Data Imunisasi Menunggu Validasi (<?= $result_imunisasi->num_rows ?>)</h2>
+        <div class="history-section-2">
+            <h4 class="sub-section-title">Data Imunisasi Menunggu Validasi (<?= $result_imunisasi->num_rows ?>)</h4>
             <div class="data-table-wrapper">
                 <table class="data-table">
                     <thead>

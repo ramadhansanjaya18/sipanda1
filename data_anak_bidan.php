@@ -6,7 +6,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'bidan') {
     exit();
 }
 
-$query_balita = "SELECT id_balita, nama_balita, tanggal_lahir, nama_orang_tua FROM balita WHERE is_active = 1 ORDER BY nama_balita ASC";
+$query_balita = "SELECT id_balita, nama_balita, tanggal_lahir, nama_orang_tua FROM balita ORDER BY nama_balita ASC";
 $result_balita = $conn->query($query_balita);
 
 $page_title = 'SIPANDA';
@@ -56,12 +56,14 @@ function hitungUmur($tanggal_lahir)
     </aside>
     <main class="main-content">
         <div class="main-header">
-            <h1>Daftar Data Anak</h1>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Daftar Data Anak</h1>
+            </div>
         </div>
-        <div class="data-controls">
-            <div class="search-bar"> <i class="fa-solid fa-search"></i> <input type="text" id="searchNama"
-                    placeholder="Cari nama anak..."> </div>
-        </div>
+
         <div class="data-table-wrapper">
             <table class="data-table">
                 <thead>

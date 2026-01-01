@@ -59,15 +59,22 @@ include 'templates/header.php';
     <main class="main-content">
 
         <div class="main-header">
-            <h1>Kelola Jadwal Kegiatan</h1>
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 style="margin: 0;">Jadwal Kegiatan</h1>
+            </div>
+
             <?php if ($is_kader): ?>
-                <a href="#" id="openModalJadwalBtn" class="btn-primary">
-                    <i class="fa-solid fa-calendar-plus"></i> Input Jadwal Kegiatan Baru
-                </a>
+                <div class="header-actions">
+                    <a href="#" id="openModalJadwalBtn" class="btn-primary">
+                        <i class="fa-solid fa-calendar-plus"></i> Input Jadwal Kegiatan Baru
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
-
-        <div class="history-section">
+        <div class="history-section-2">
             <div class="data-table-wrapper">
                 <table class="data-table">
                     <thead>

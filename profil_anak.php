@@ -88,7 +88,15 @@ include 'templates/header.php';
     </aside>
 
     <main class="main-content">
+
+
         <div class="profile-layout-container">
+
+            <div style="display: flex; align-items: center;">
+                <button id="sidebarToggle" class="btn-toggle-sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
 
             <div class="profile-info-center">
                 <div class="profile-photo-lg-container">

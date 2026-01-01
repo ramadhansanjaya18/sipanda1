@@ -92,7 +92,8 @@ include 'templates/header.php';
                     <div class="form-column">
                         <div class="form-group">
                             <label for="deskripsi">Deskripsi (Opsional)</label>
-                            <textarea ...><?= htmlspecialchars($jadwal['deskripsi'] ?? '') ?></textarea>
+                            <textarea id="deskripsi" name="deskripsi" class="form-textarea"
+                                rows="4"><?= htmlspecialchars($jadwal['deskripsi'] ?? '') ?></textarea>
                         </div>
                     </div>
                 </div>
